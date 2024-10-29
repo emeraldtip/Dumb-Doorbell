@@ -8,4 +8,3 @@ while True:
 		buzzer_pin.duty(200)
 	else:
 		buzzer_pin.duty(0)
-		
