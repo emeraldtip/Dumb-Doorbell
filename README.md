@@ -4,6 +4,10 @@ The ELEC-C9801 Design Thinking and Electronic prototyping final project for Team
 
 ## Installing/uploading code
 
+### Generating the .bat scripts for easier installation
+Run "python generate-bast.py" and follow the instructions.
+This is done, as otherwise if a single team member would edit a bat script to change the com port, if they pushed their changes, the com port would change for everyone else aswell, which is not wanted.
+
 ### Flashing the ESP32
 
 Use the install-micropython.bat file to flash micropython onto the ESP32, if you don't have micropython on the controller yet.
