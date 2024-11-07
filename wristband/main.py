@@ -1,10 +1,11 @@
-from machine import Pin, Timer
+from machine import Pin
+import time
 
-led = Pin(19, Pin.OUT)
-tim = Timer(0)
+led = Pin(13, Pin.OUT)
 
-tim.init(period = 500, mode = Timer.PERIODIC, callback = lambda t: blink(led))
+def toggle(pin: Pin):
+    pin.value(not pin.value())
 
-def blink(pin: Pin):
-    if pin.value() == 0: pin.value(1)
-    else: pin.value(0)
+while True:
+    toggle(led)
+    time.sleep(1)
