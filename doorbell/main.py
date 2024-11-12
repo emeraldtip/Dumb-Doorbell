@@ -4,6 +4,10 @@ import struct
 import asyncio
 from machine import Pin, I2S
 
+#variables
+filename = "yee.wav"
+volume = 1.0
+
 #Button
 button_pin = Pin(23,Pin.IN,Pin.PULL_UP)
 
@@ -17,6 +21,8 @@ wav = open("yee.wav", "rb")
 
 #audio file playing logic
 async def play_ringtone():
+    global wav
+
     #Open I2S stream
     audio_out = I2S(0, sck=sck_pin, ws=ws_pin, sd=sd_pin,mode=I2S.TX, bits=16, format=I2S.MONO, rate=11025, ibuf=20000)
     
@@ -29,10 +35,10 @@ async def play_ringtone():
         #read in 2048 bytes from the wav file
         read_bytes = wav.read(2048)
         if len(read_bytes) != 0:
-            #convert bytes to integers, reduce amplitude (-32) and the put into bytearray
+            #convert bytes to integers, reduce amplitude, then multiply by volume and the put into bytearray
             e = 0
             for i in struct.unpack("B"*len(read_bytes),read_bytes):
-                wav_samples_final[e] = int(i-32)
+                wav_samples_final[e] = int((i-128)*volume)
                 e+=1
             print("writing")
             audio_out.write(wav_samples_final)
@@ -45,6 +51,7 @@ async def play_ringtone():
 
 
 async def check_button():
+    global wav
     if button_pin.value() == 0:
         # reopen file
         wav = open("yee.wav", "rb")
