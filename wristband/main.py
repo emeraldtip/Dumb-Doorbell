@@ -1,11 +1,21 @@
 from machine import Pin
 import time
 
-led = Pin(13, Pin.OUT)
+vibr = Pin(13, Pin.OUT)
+
+flag = False #Using the variable as
+#if you just read the value of the pin from the ESP, it will always read 0
+#as the vibration motor pulls too much current and pulls the voltage
+#of the pin too low
+
 
 def toggle(pin: Pin):
-    pin.value(not pin.value())
+    global flag
+
+    pin.value(flag)
+    print("toggled",flag)
+    flag = not flag
 
 while True:
-    toggle(led)
+    toggle(vibr)
     time.sleep(1)
