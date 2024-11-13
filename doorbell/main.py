@@ -1,10 +1,10 @@
-import os
-import time
 import struct
 import asyncio
+import network
+import espnow
 from machine import Pin, I2S
 
-#variables
+#Global variables
 filename = "yee.wav"
 volume = 1.0
 
@@ -16,12 +16,26 @@ sck_pin = Pin(14)   # Serial clock output
 ws_pin = Pin(13)    # Word clock output
 sd_pin = Pin(12)    # Serial data output
 
-#file opening logic
+#File opening logic
 wav = open("yee.wav", "rb")
+
+#WIFI init logic (required for ESP-NOW)
+ap = network.WLAN(network.AP_IF)
+ap.active(True)
+
+#ESP-NOW init logic
+interface = espnow.ESPNow()
+interface.active(True)
+peer = b'\xcc\x7b\x5c\x9a\xf1\xfc' # MAC address of wristband
+
+interface.add_peer(peer, ifidx=network.AP_IF)      
+
+
 
 #audio file playing logic
 async def play_ringtone():
     global wav
+    global volume
 
     #Open I2S stream
     audio_out = I2S(0, sck=sck_pin, ws=ws_pin, sd=sd_pin,mode=I2S.TX, bits=16, format=I2S.MONO, rate=11025, ibuf=20000)
@@ -50,13 +64,25 @@ async def play_ringtone():
     audio_out.deinit()
 
 
+
+
+
+
+
+
+
+#mainloop
 async def check_button():
     global wav
+    global filename
+    global interface
+    
     if button_pin.value() == 0:
         # reopen file
-        wav = open("yee.wav", "rb")
+        wav = open(filename, "rb")
         # seek to beginning of data
         wav.seek(44)
+        interface.send(peer, "ring")
         
         print("registered")
         #wait before registering next button press
