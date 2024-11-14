@@ -17,3 +17,5 @@ Make sure to edit the .bat file to point to the correct COM port (check in your 
 
 Use the write-to-ESP.bat files in the directories of the respective devices (main doorbell and wristband) to upload the code to the ESP32.
 Make sure to edit the .bat file to point to the correct COM port (check in your device manager under "Ports (COM & LPT)")
+
+### Encryption
