@@ -6,7 +6,7 @@ import os
 import random
 from machine import Pin, I2S
 from microdot import Microdot
-from utemplate import Template
+from utemplater import Template
 
 
 
@@ -112,7 +112,7 @@ async def play_ringtone():
 #web code:
 @app.route("/")
 async def index(request):
-    return Template("index.html").render()
+    return Template("index.html").render(), {'Content-Type': 'text/html'}
 
 
 

@@ -2,7 +2,7 @@
 
 from utemplate import recompile
 
-#_loader = None
+_loader = None
 
 
 class Template:

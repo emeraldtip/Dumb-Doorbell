@@ -2,10 +2,12 @@ port = input("Enter comport number in the format [COMx], where x stands for the 
 
 with open("doorbell/write-to-ESP.bat","w") as file:
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp main.py :\n")
+	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f mkdir templates\n")
+	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp templates/index.html :templates/index.html\n")
 
 with open("doorbell/copy-libraries-to-ESP.bat","w") as file:
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp microdot.py :\n")
-	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp utemplate.py :\n")
+	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp utemplater.py :\n")
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f mkdir utemplate :\n")
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp utemplate/compiled.py :utemplate/compiled.py\n")
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp utemplate/recompile.py :utemplate/recompile.py\n")
