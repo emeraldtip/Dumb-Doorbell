@@ -5,7 +5,7 @@ import espnow
 import os
 import random
 from machine import Pin, I2S
-from microdot import Microdot
+from microdot import Microdot, send_file
 from utemplater import Template
 
 
@@ -73,6 +73,7 @@ else:
 
 #audio file playing logic
 async def play_ringtone():
+    await asyncio.sleep_ms(1)
     global wav
     global volume
 
@@ -85,8 +86,14 @@ async def play_ringtone():
     wav_samples_final = memoryview(bytearray(2048))
     
     while True:
-        #read in 2048 bytes from the wav file
-        read_bytes = wav.read(2048)
+        
+        read_bytes = ""
+        try:
+            #read in 2048 bytes from the wav file
+            read_bytes = wav.read(2048)
+        except:
+            pass
+            
         if len(read_bytes) != 0:
             #convert bytes to integers, reduce amplitude, then multiply by volume and the put into bytearray
             e = 0
@@ -116,9 +123,21 @@ async def index(request):
 
 
 
+#static file routing
+@app.route('/static/<path:path>')
+async def static(request, path):
+    if '..' in path:
+        # directory traversal is not allowed
+        return 'Not found', 404
+    return send_file('static/' + path)
 
-
-
+#updating parameters
+@app.route('/static/<path:path>')
+async def static(request, path):
+    if '..' in path:
+        # directory traversal is not allowed
+        return 'Not found', 404
+    return send_file('static/' + path)
 
 
 
@@ -129,25 +148,22 @@ async def index(request):
 
 #mainloop
 async def check_button():
+    global play_task
     global wav
     global filename
     global interface
     
-    
     if button_pin.value() == 0:
-        # reopen file
+        #(re)open file
         wav = open(filename, "rb")
-        # seek to beginning of data
+        #seek to beginning of data
         wav.seek(44)
         interface.send(peer, "ring")
         
         print("registered")
+        
         #wait before registering next button press
-        host, msg = interface.recv()
-        if msg:
-            print(host.hex(),msg)
-            
-        await asyncio.sleep_ms(300)
+        await asyncio.sleep_ms(100)
         asyncio.create_task(play_ringtone())
 
         

@@ -4,6 +4,8 @@ with open("doorbell/write-to-ESP.bat","w") as file:
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp main.py :\n")
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f mkdir templates\n")
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp templates/index.html :templates/index.html\n")
+	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f mkdir static\n")
+	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp static/index.css :static/index.css\n")
 
 with open("doorbell/copy-libraries-to-ESP.bat","w") as file:
 	file.write("python ../tools-and-binaries/pyboard.py --device " + port + " -f cp microdot.py :\n")
