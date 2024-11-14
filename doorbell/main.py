@@ -30,14 +30,18 @@ interface.active(True)
 peer = b'\xcc\x7b\x5c\x9a\xf1\xfc' # MAC address of wristband
 
 #encryption keys
-if os.path.exists("keys.txt"):
+if "keys.txt" in os.listdir():
     with open("keys.txt","r") as file:
         pmk, lmk = file.readlines() #read primary and local master keys
         interface.set_pmk(pmk.strip()) #strip for whitespace removal just in case
-        interface.add_peer(peer, ifidx=network.AP_IF, lmk=lmk.strip(), encrypt=True)      
+        interface.add_peer(peer, ifidx=network.AP_IF, lmk=lmk.strip(), encrypt=True)
+        print("Using encryption")    
 else:
     #non-encrypted
     interface.add_peer(peer, ifidx=network.AP_IF)    
+    print("Non-encrypted")
+
+
 
 
 
