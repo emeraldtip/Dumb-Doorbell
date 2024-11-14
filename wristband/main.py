@@ -3,6 +3,7 @@ import network
 import espnow
 import os
 from machine import Pin
+import re
 
 
 vibr = Pin(13, Pin.OUT)
@@ -20,7 +21,7 @@ net.active(True)
 #ESP-NOW setup
 interface = espnow.ESPNow()
 interface.active(True)
-peer = b"\x30\xae\xa4\x76\x23\x21" # MAC address of doorbell
+peer = b'\x30\xae\xa4\x76\x23\x21' # MAC address of doorbell
 
 #encryption keys
 if "keys.txt" in os.listdir():
@@ -32,15 +33,6 @@ if "keys.txt" in os.listdir():
 else:
     #non-encrypted
     interface.add_peer(peer, ifidx=network.STA_IF)    
-
-def turnoff(pin:Pin):
-    pin.value(1)
-    counter = 10
-    while button.value() ==0 and counter>0 :
-        pin.value(1)
-        time.sleep(1)
-        counter-=1
-    pin.value(0)
 
 
 def toggle(pin: Pin):
@@ -56,15 +48,42 @@ while True:
     if msg: #If no message is received then msg=None
         print(host.hex(), msg)
         interface.send(peer, "received")
-        if msg == b"ring":
+        
+        message = str(msg).strip("b'").split(" ")
+        if bool(re.match('^[-. ]*$',message[1])):
+            for i in message:
+                if i==' ': 
+                    vibr.off()
+                    time.sleep(1.5)
+
+                elif i == '-':
+                    vibr.on()
+                    time.sleep(1.5)
+                    vibr.off()
+                elif i == '.':
+                    vibr.on()
+                    time.sleep(0.5)
+                    vibr.off()
+                if button.value() == 0: break
+
+        elif msg == b"ring":
             counter = 20
             while counter>0 :
                 vibr.value(1)
                 time.sleep(0.5)
                 counter-=1
-                print(button.value())
                 if button.value() == 0: break
             vibr.value(0)
+        elif msg == b"tone":
+            counter = 3
+            while counter>0:
+                for x in range(1,3):
+                    vibr.value(1)
+                    time.sleep(1)
+                    vibr.off()
+                    time.sleep(0.5)
+                    counter -=1
+                    if button.value() == 0: break
 
 
         
