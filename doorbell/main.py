@@ -3,7 +3,14 @@ import asyncio
 import network
 import espnow
 import os
+import random
 from machine import Pin, I2S
+from microdot import Microdot
+
+
+
+#Webserver init variable
+app = Microdot()
 
 #Global variables
 filename = "yee.wav"
@@ -20,9 +27,26 @@ sd_pin = Pin(12)    # Serial data output
 #File opening logic
 wav = open("yee.wav", "rb")
 
-#WIFI init logic (required for ESP-NOW)
+#WIFI init logic
 ap = network.WLAN(network.AP_IF)
 ap.active(True)
+
+ssid, pw = "", ""
+if "wifi.txt" in os.listdir():
+    with open("wifi.txt","r") as file:
+        ssid, pw = file.readlines()
+else:
+    ssid = "Dumb Doorbell"
+    pw = "".join(random.choice(
+    "QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm_!+-"
+    ) for i in range(8)) #random 8-chracter password generation
+    with open("wifi.txt","w") as file:
+        file.write(ssid+"\n"+pw)
+
+print("SSID=",ssid)    
+print("Password=",pw)
+ap.config(essid=ssid, password=pw, security=3) #3 - WPA2_PSK authentication
+
 
 #ESP-NOW init logic
 interface = espnow.ESPNow()
@@ -84,6 +108,23 @@ async def play_ringtone():
 
 
 
+#web code:
+@app.route('/')
+async def index(request):
+    return 'Hello, world!'
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #mainloop
 async def check_button():
@@ -106,5 +147,6 @@ async def check_button():
     else:
         pass
 
+server = asyncio.create_task(app.start_server(port=80))
 while True:
     asyncio.run(check_button())
