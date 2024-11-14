@@ -26,3 +26,8 @@ Upload the microdot and utemplate libraries to the doorbell as well using: ```py
 - Copy the "keys.txt" file to the ESP using: ```python ../tools-and-binaries/pyboard.py --device [serial-port-here] -f cp keys.txt :```
 - Make another copy of the keys.txt file into the wristband folder
 - Use the same command to copy the keys over to the ESP: ```python ../tools-and-binaries/pyboard.py --device [serial-port-here] -f cp keys.txt :```
+
+
+## Credits:
+- [microdot](https://github.com/miguelgrinberg/microdot) by [miguelgrinberg](https://github.com/miguelgrinberg/) as the web framework 
+- [utemplate](https://github.com/miguelgrinberg/microdot) by [pfalcon](https://github.com/pfalcon) as the template engine used with microdot
