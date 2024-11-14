@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,48 +11,67 @@
 <title>Dumb Doorbell</title>
 
 <body>
-    <header>
-        <h1>Dumb Doorbell</h1>
+    <div id="container">
 
-    </header>
-    <div>
-        <h2>Introduction</h2>
-        <p>Lorem ipsum</p>
-    </div>
 
-    <div class="form">
+        <header>
+            <h1>Dumb Doorbell control panel</h1>
+
+        </header>
         
 
-        <form action="">
-            <div id="doorbell-change">
-                <h2>Doorbell</h2>
-                <div class="field">
-                    <h3>Volume adjustment</h3>
-                    <label for="">Volume</label>
-                    <input type="range" min="0" max="100" id="volume-input">
+        <div class="form">
+
+
+            <form action="">
+                <div class="part-change" id="doorbell-change">
+                    <h2>Doorbell</h2>
+                    <div class="field">
+                        <h3>Volume adjustment</h3>
+                        <p>Adjust the volume of amplifier in the doorbell.</p>
+                        <label for="">Volume</label>
+                        <input type="range" min="0" max="100" id="volume-input" oninput="">
+                            <output id="volume-output">60 <!-- Change to show current value --> </output> 
+                    </div>
+
+                    <div class="field">
+                        <h3>Alert sound</h3>
+                        <p>Upload a file as your alert sound. <br>
+                        Note: Only .wav files are supported. <br>
+                        Current sound: <!-- Show the current sound. Either the name of uploaded file or default sound. -->
+                        </p>
+                        <input type="file" id="file-input" accept=".wav">
+                            
+                    </div>
                 </div>
 
-                <div class="field">
-                    <h3>Alert sound</h3>
-                    <input type="file" id="file-input">
+                <div class="part-change" id="wristband-change">
+                    <h2>Wristband</h2>
+                    <div class="field">
+                        <h3>Vibration pattern</h3>
+                        <p>Choose the vibration pattern for the wristband to your preferrence.</p>
+                        <div class="pattern-choice">
+                            <label for="pattern1">
+                                <input type="radio" name="pattern" id="pattern1" value="Pattern 1">
+                                Pattern 1
+                            </label>
+                        </div>
+
+                        <div class="pattern-choice">
+                            <label for="pattern2">
+                                <input type="radio" name="pattern" id="pattern2" value="Pattern 2">
+                                Pattern 2
+                            </label>
+                        </div>
+
+                    </div>
                 </div>
+
+            </form>
+            <div class="button-container"  style="display:flex">
+                <button class="button" type="submit">Confirm changes</button>
+                <button class="button" type="reset">Reset settings to defaults</button>
             </div>
-            
-            <div id="wristband-change">
-                <h2>Wristband</h2>
-                <div class="field">
-                    <h3>Vibration pattern</h3>
-                    <input type="radio" name="" id="pattern1" value="Pattern 1">
-                    <label for="pattern1">Pattern 1</label>
-                    <input type="radio" name="" id="pattern2" value="Pattern 2">
-                    <label for="pattern2">Pattern 2</label>
-                </div>
-            </div>
-            
-        </form>
-        <div>
-            <button class="button" type="submit">Confirm changes</button>
-            <button class="button" type="reset">Reset</button>
         </div>
     </div>
 
