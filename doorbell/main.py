@@ -6,6 +6,7 @@ import os
 import random
 from machine import Pin, I2S
 from microdot import Microdot
+from utemplate import Template
 
 
 
@@ -51,7 +52,7 @@ ap.config(essid=ssid, password=pw, security=3) #3 - WPA2_PSK authentication
 #ESP-NOW init logic
 interface = espnow.ESPNow()
 interface.active(True)
-peer = b'\xcc\x7b\x5c\x9a\xf1\xfc' # MAC address of wristband
+peer = b"\xcc\x7b\x5c\x9a\xf1\xfc" # MAC address of wristband
 
 #encryption keys
 if "keys.txt" in os.listdir():
@@ -109,9 +110,9 @@ async def play_ringtone():
 
 
 #web code:
-@app.route('/')
+@app.route("/")
 async def index(request):
-    return 'Hello, world!'
+    return Template("index.html").render()
 
 
 
