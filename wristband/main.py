@@ -20,7 +20,7 @@ net.active(True)
 #ESP-NOW setup
 interface = espnow.ESPNow()
 interface.active(True)
-peer = b'\x30\xae\xa4\x76\x23\x21' # MAC address of doorbell
+peer = b"\x30\xae\xa4\x76\x23\x21" # MAC address of doorbell
 
 #encryption keys
 if "keys.txt" in os.listdir():
