@@ -16,7 +16,8 @@ Make sure to edit the .bat file to point to the correct COM port (check in your 
 ### Uploading python code to the ESP32
 
 Use the write-to-ESP.bat files in the directories of the respective devices (main doorbell and wristband) to upload the code to the ESP32.
-Make sure to edit the .bat file to point to the correct COM port (check in your device manager under "Ports (COM & LPT)")
+Make sure to edit the .bat file to point to the correct COM port (in Windows check in your device manager under "Ports (COM & LPT)")
+Upload the microdot and utemplate libraries to the doorbell as well using: ```python ../tools-and-binaries/pyboard.py --device [serial-port-here] -f cp microdot.py :``` and ```python ../tools-and-binaries/pyboard.py --device [serial-port-here] -f cp utemplate.py :```
 
 ### Encryption
 
