@@ -1,26 +1,60 @@
-<!doctype html>
+<!DOCTYPE html>
+<html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
 </head>
+
 <title>Dumb Doorbell</title>
-<body>Test
+
+<body>
     <header>
         <h1>Dumb Doorbell</h1>
-        
+
     </header>
     <div>
         <h2>Introduction</h2>
         <p>Lorem ipsum</p>
     </div>
 
-    <div>
-        <h2>Volume adjustment</h2>
+    <div class="form">
+        
+
         <form action="">
-            <label for="">Volume</label>
-            <input type="range" min="0" max="100">
-            <button type="submit" value="Update"></button>
+            <div id="doorbell-change">
+                <h2>Doorbell</h2>
+                <div class="field">
+                    <h3>Volume adjustment</h3>
+                    <label for="">Volume</label>
+                    <input type="range" min="0" max="100" id="volume-input">
+                </div>
+
+                <div class="field">
+                    <h3>Alert sound</h3>
+                    <input type="file" id="file-input">
+                </div>
+            </div>
+            
+            <div id="wristband-change">
+                <h2>Wristband</h2>
+                <div class="field">
+                    <h3>Vibration pattern</h3>
+                    <input type="radio" name="" id="pattern1" value="Pattern 1">
+                    <label for="pattern1">Pattern 1</label>
+                    <input type="radio" name="" id="pattern2" value="Pattern 2">
+                    <label for="pattern2">Pattern 2</label>
+                </div>
+            </div>
+            
         </form>
+        <div>
+            <button type="submit">Confirm changes</button>
+            <button type="reset">Reset</button>
+        </div>
     </div>
 
 </body>
 
+</html>
