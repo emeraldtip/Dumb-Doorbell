@@ -15,7 +15,7 @@ app = Microdot()
 
 #Global variables
 filename = "yee.wav"
-volume = 1.0
+volume = 0.5
 
 #Button
 button_pin = Pin(23,Pin.IN,Pin.PULL_UP)
@@ -98,7 +98,7 @@ async def play_ringtone():
             #convert bytes to integers, reduce amplitude, then multiply by volume and the put into bytearray
             e = 0
             for i in struct.unpack("B"*len(read_bytes),read_bytes):
-                wav_samples_final[e] = int((i-128)*volume)
+                wav_samples_final[e] = int((i-128)*volume*2)
                 e+=1
             print("writing")
             audio_out.write(wav_samples_final)
