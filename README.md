@@ -23,5 +23,5 @@ Make sure to edit the .bat file to point to the correct COM port (check in your 
 - Create 2 16-byte strings to store the encryption keys.
 - Put them in a file called "keys.txt" in the doorbell folder and switch into it
 - Copy the "keys.txt" file to the ESP using: ```python ../tools-and-binaries/pyboard.py --device [serial-port-here] -f cp keys.txt :```
-- Make another copy of the keys.txt file into the wristband folder and switch the order of the keys
+- Make another copy of the keys.txt file into the wristband folder
 - Use the same command to copy the keys over to the ESP: ```python ../tools-and-binaries/pyboard.py --device [serial-port-here] -f cp keys.txt :```
