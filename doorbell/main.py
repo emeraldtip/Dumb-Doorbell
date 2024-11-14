@@ -132,6 +132,7 @@ async def check_button():
     global filename
     global interface
     
+    
     if button_pin.value() == 0:
         # reopen file
         wav = open(filename, "rb")
@@ -141,8 +142,13 @@ async def check_button():
         
         print("registered")
         #wait before registering next button press
+        host, msg = interface.recv()
+        if msg:
+            print(host.hex(),msg)
+            
         await asyncio.sleep_ms(300)
         asyncio.create_task(play_ringtone())
+
         
     else:
         pass
