@@ -5,8 +5,12 @@
 
 }
 
+header {
+    text-align: center;
+}
+
 #container {
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
@@ -59,7 +63,7 @@ body {
   cursor: pointer;
   font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
   font-size: 100%;
-  height: 60px;
+  height: 80px;
   line-height: 1.15;
   margin: 12px 10px;
   outline: none;

@@ -1,3 +1,4 @@
+{% args vol %}
 <!DOCTYPE html>
 <html>
 
@@ -30,8 +31,8 @@
                         <h3>Volume adjustment</h3>
                         <p>Adjust the volume of amplifier in the doorbell.</p>
                         <label for="">Volume</label>
-                        <input type="range" min="0" max="100" id="volume-input" oninput="">
-                            <output id="volume-output">60 <!-- Change to show current value --> </output> 
+                        <input type="range" min="0" max="100" value = "{{ vol }}" id="volume-input">
+                            <output id="volume-output">{{ vol }}</output> 
                     </div>
 
                     <div class="field">
@@ -68,13 +69,13 @@
                 </div>
 
             </form>
+            <script src="static/index.js"></script>
             <div class="button-container"  style="display:flex">
-                <button class="button" type="submit">Confirm changes</button>
-                <button class="button" type="reset">Reset settings to defaults</button>
+                <button class="button" type="submit" onclick="submit()">Confirm changes</button>
+                <button class="button" type="reset" onclick="resett()">Reset settings to defaults</button>
             </div>
         </div>
     </div>
 
 </body>
-
 </html>

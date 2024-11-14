@@ -4,9 +4,11 @@ import network
 import espnow
 import os
 import random
+import json
 from machine import Pin, I2S
 from microdot import Microdot, send_file
 from utemplater import Template
+import gc
 
 
 
@@ -16,6 +18,7 @@ app = Microdot()
 #Global variables
 filename = "yee.wav"
 volume = 0.5
+pattern = 1
 
 #Button
 button_pin = Pin(23,Pin.IN,Pin.PULL_UP)
@@ -71,26 +74,36 @@ else:
 
 
 
+def set_volume(voe):
+    global volume
+    volume = voe
+
+
+wav_samples_final = memoryview(bytearray(512))
 #audio file playing logic
 async def play_ringtone():
-    await asyncio.sleep_ms(1)
+    #clear ram
+    gc.collect()
+   
     global wav
     global volume
+    global wav_samples_final
+
+    await asyncio.sleep_ms(1)
 
     #Open I2S stream
     audio_out = I2S(0, sck=sck_pin, ws=ws_pin, sd=sd_pin,mode=I2S.TX, bits=16, format=I2S.MONO, rate=11025, ibuf=20000)
-    
+        
+
     #seek past the header of the file to the audio data
     pos = wav.seek(44)
-    
-    wav_samples_final = memoryview(bytearray(2048))
     
     while True:
         
         read_bytes = ""
         try:
             #read in 2048 bytes from the wav file
-            read_bytes = wav.read(2048)
+            read_bytes = wav.read(512)
         except:
             pass
             
@@ -100,7 +113,7 @@ async def play_ringtone():
             for i in struct.unpack("B"*len(read_bytes),read_bytes):
                 wav_samples_final[e] = int((i-128)*volume*2)
                 e+=1
-            print("writing")
+            #print("writing")
             audio_out.write(wav_samples_final)
             await asyncio.sleep_ms(1)
         else:
@@ -119,7 +132,8 @@ async def play_ringtone():
 #web code:
 @app.route("/")
 async def index(request):
-    return Template("index.html").render(), {'Content-Type': 'text/html'}
+    vol = int(volume*100)
+    return Template("index.html").render(vol=vol), {'Content-Type': 'text/html'}
 
 
 
@@ -132,12 +146,28 @@ async def static(request, path):
     return send_file('static/' + path)
 
 #updating parameters
-@app.route('/static/<path:path>')
-async def static(request, path):
-    if '..' in path:
-        # directory traversal is not allowed
-        return 'Not found', 404
-    return send_file('static/' + path)
+@app.post('/update',)
+async def updet(request):
+    #global volume
+    #global pattern
+    
+    print("update")
+    if request.method == "POST":
+        data = request.json
+        print(data)
+        if len(data) != 0:
+            vol = int(data.get("volume"))
+            pattern = int(data.get("pattern"))
+            resee = int(data.get("reset"))
+            print(vol)
+            print(pattern)
+            print(resee)
+            if resee == 0:
+                print("dontreset")
+                set_volume(float(vol/100))
+                pattern = pattern
+
+    return json.dumps({"success":True,"message":"Successfully updated!"}), 200, {'ContentType':'application/json'}
 
 
 
@@ -148,7 +178,6 @@ async def static(request, path):
 
 #mainloop
 async def check_button():
-    global play_task
     global wav
     global filename
     global interface
@@ -163,13 +192,11 @@ async def check_button():
         print("registered")
         
         #wait before registering next button press
-        await asyncio.sleep_ms(100)
+        await asyncio.sleep_ms(300)
         asyncio.create_task(play_ringtone())
-
-        
     else:
         pass
 
-server = asyncio.create_task(app.start_server(port=80))
+asyncio.create_task(app.start_server(port=80))
 while True:
     asyncio.run(check_button())
