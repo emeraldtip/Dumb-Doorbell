@@ -92,7 +92,7 @@ async def play_ringtone():
     await asyncio.sleep_ms(1)
 
     #Open I2S stream
-    audio_out = I2S(0, sck=sck_pin, ws=ws_pin, sd=sd_pin,mode=I2S.TX, bits=16, format=I2S.MONO, rate=11025, ibuf=20000)
+    audio_out = I2S(0, sck=sck_pin, ws=ws_pin, sd=sd_pin,mode=I2S.TX, bits=16, format=I2S.MONO, rate=11025, ibuf=5000)
         
 
     #seek past the header of the file to the audio data
