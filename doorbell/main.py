@@ -74,9 +74,7 @@ else:
 
 
 
-def set_volume(voe):
-    global volume
-    volume = voe
+
 
 
 wav_samples_final = memoryview(bytearray(512))
@@ -92,7 +90,7 @@ async def play_ringtone():
     await asyncio.sleep_ms(1)
 
     #Open I2S stream
-    audio_out = I2S(0, sck=sck_pin, ws=ws_pin, sd=sd_pin,mode=I2S.TX, bits=16, format=I2S.MONO, rate=11025, ibuf=5000)
+    audio_out = I2S(0, sck=sck_pin, ws=ws_pin, sd=sd_pin,mode=I2S.TX, bits=16, format=I2S.MONO, rate=11025, ibuf=5120)
         
 
     #seek past the header of the file to the audio data
@@ -148,8 +146,8 @@ async def static(request, path):
 #updating parameters
 @app.post('/update',)
 async def updet(request):
-    #global volume
-    #global pattern
+    global volume
+    global pattern
     
     print("update")
     if request.method == "POST":
@@ -157,15 +155,15 @@ async def updet(request):
         print(data)
         if len(data) != 0:
             vol = int(data.get("volume"))
-            pattern = int(data.get("pattern"))
-            resee = int(data.get("reset"))
+            patt = int(data.get("pattern"))
+            reset = int(data.get("reset"))
             print(vol)
-            print(pattern)
-            print(resee)
-            if resee == 0:
+            print(patt)
+            print(reset)
+            if reset == 0:
                 print("dontreset")
-                set_volume(float(vol/100))
-                pattern = pattern
+                volume = vol/100
+                pattern = patt
 
     return json.dumps({"success":True,"message":"Successfully updated!"}), 200, {'ContentType':'application/json'}
 
