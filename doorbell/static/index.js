@@ -1,5 +1,4 @@
 document.getElementById("volume-input").addEventListener("input", updateVol, false);
-document.getElementById("pattern1").addEventListener("input", updatePattern, false);
 
 let volume = 50
 let ringType = 1
@@ -10,13 +9,12 @@ function updateVol(){
 	volume = this.value;
 }
 
-function updatePattern(){
-	if (this.value) {
-		ringType = 1;
-	}
-	else {
-		ringType = 2;
-	}
+function updatePattern1(){
+	ringType = 1;
+}
+
+function updatePattern2(){
+	ringType = 2;
 }
 
 function submit() {
