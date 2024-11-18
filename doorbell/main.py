@@ -11,14 +11,13 @@ from utemplater import Template
 import gc
 
 
-
 #Webserver init variable
 app = Microdot()
 
 #Global variables
 filename = "yee.wav"
 volume = 0.5
-pattern = 1
+pattern = 1.0
 
 #Button
 button_pin = Pin(23,Pin.IN,Pin.PULL_UP)
@@ -71,10 +70,10 @@ else:
 
 
 
-
-
-
-
+#Load settings from previous session
+if "settings.txt" in os.listdir():
+    with open("settings.txt","r") as file:
+        volume, settings = [float(i) for i in file.readlines()]
 
 
 wav_samples_final = memoryview(bytearray(512))
@@ -133,8 +132,6 @@ async def index(request):
     vol = int(volume*100)
     return Template("index.html").render(vol=vol), {'Content-Type': 'text/html'}
 
-
-
 #static file routing
 @app.route('/static/<path:path>')
 async def static(request, path):
@@ -164,7 +161,8 @@ async def updet(request):
                 print("dontreset")
                 volume = vol/100
                 pattern = patt
-
+            with open("settings.txt","w+") as file:
+                file.write(str(volume)+"\n"+str(pattern))
     return json.dumps({"success":True,"message":"Successfully updated!"}), 200, {'ContentType':'application/json'}
 
 
