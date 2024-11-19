@@ -20,7 +20,6 @@ filename = "sound.wav"
 volume = 0.5
 pattern = 1.0
 samplerate = 11025
-bits_per_sample = 16
 
 #Button
 button_pin = Pin(23,Pin.IN,Pin.PULL_UP)
@@ -81,7 +80,7 @@ if "settings.txt" in os.listdir():
     print("read")
 
 
-wav_samples_final = memoryview(bytearray(8192))
+wav_samples_final = memoryview(bytearray(512))
 #audio file playing logic
 async def play_ringtone():
     #clear ram
@@ -106,24 +105,16 @@ async def play_ringtone():
         
         read_bytes = ""
         try:
-            if bits_per_sample == 8:
-                read_bytes = wav.read(512)
-            elif bits_per_sample == 16:
-                read_bytes = wav.read(16384)
+            read_bytes = wav.read(512)
         except:
             pass
             
         if len(read_bytes) != 0:
             #convert bytes to integers, reduce amplitude, then multiply by volume and the put into bytearray
             e = 0
-            if bits_per_sample == 8:
-                for i in struct.unpack("B"*len(read_bytes),read_bytes):
-                    wav_samples_final[e] = int((i-128)*volume*2)
-                    e+=1
-            else:
-                for i in struct.unpack("h"*int(len(read_bytes)/2),read_bytes):
-                    wav_samples_final[e] = int((i//256)*volume*2)
-                    e+=1
+            for i in struct.unpack("B"*len(read_bytes),read_bytes):
+                wav_samples_final[e] = int((i-128)*volume*2)
+                e+=1
             #print("writing")
             audio_out.write(wav_samples_final)
             await asyncio.sleep_ms(1)
@@ -226,10 +217,6 @@ async def check_button():
         wav.seek(24)
         samplerate = int.from_bytes(wav.read(4),"little")
         print("Samplerate:",samplerate)
-        #seek to read bits per sample
-        wav.seek(34)
-        bits_per_sample = int.from_bytes(wav.read(2),"little")
-        print("Bits per sample:", bits_per_sample)
         #seek to beginning of data
         wav.seek(44)
         if pattern == 1.0:
