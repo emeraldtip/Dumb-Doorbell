@@ -82,7 +82,7 @@ while True:
                     vibr.off()
                     time.sleep(0.5)
                     counter -=1
-                    if button.value() == 0: break
+                if button.value() == 0: break
 
 
         
