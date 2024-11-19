@@ -6,16 +6,17 @@ import os
 import random
 import json
 from machine import Pin, I2S
-from microdot import Microdot, send_file
+from microdot import Microdot, send_file, Request
 from utemplater import Template
 import gc
 
 
 #Webserver init variable
 app = Microdot()
+Request.max_content_length = 1024 * 1024
 
 #Global variables
-filename = "yee.wav"
+filename = "sound.wav"
 volume = 0.5
 pattern = 1.0
 
@@ -28,7 +29,7 @@ ws_pin = Pin(13)    # Word clock output
 sd_pin = Pin(12)    # Serial data output
 
 #File opening logic
-wav = open("yee.wav", "rb")
+wav = open(filename, "rb")
 
 #WIFI init logic
 ap = network.WLAN(network.AP_IF)
@@ -171,6 +172,24 @@ async def updet(request):
                 file.write(str(volume)+"\n"+str(pattern))
     return json.dumps({"success":True,"message":"Successfully updated!"}), 200, {'ContentType':'application/json'}
 
+#file upload bs
+@app.post('/upload')
+async def upload(request):
+    # obtain the filename and size from request headers
+    filename = request.headers['Content-Disposition'].split(
+        'filename=')[1].strip('"')
+    size = int(request.headers['Content-Length'])
+
+
+    # write the file to the files directory in 1K chunks
+    with open("sound.wav", 'wb') as f:
+        while size > 0:
+            chunk = await request.stream.read(min(size, 1024))
+            f.write(chunk)
+            size -= len(chunk)
+
+    print('Successfully saved file: ' + filename)
+    return ''
 
 
 
