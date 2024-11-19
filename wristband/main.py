@@ -49,24 +49,23 @@ while True:
         print(host.hex(), msg)
         interface.send(peer, "received")
         
-        message = str(msg).strip("b'").split(" ")
-        if bool(re.match('^[-. ]*$',message[1])):
-            for i in message:
-                if i==' ': 
-                    vibr.off()
-                    time.sleep(1.5)
-
-                elif i == '-':
-                    vibr.on()
-                    time.sleep(1.5)
-                    vibr.off()
-                elif i == '.':
-                    vibr.on()
-                    time.sleep(0.5)
-                    vibr.off()
-                if button.value() == 0: break
-
-        elif msg == b"ring":
+        message = str(msg).strip("b'")
+#        if bool(re.match('^[-. ]*$',message[1])):
+#            for i in message:
+#                if i==' ': 
+#                    vibr.off()
+#                    time.sleep(1.5)
+#
+#                elif i == '-':
+#                    vibr.on()
+#                    time.sleep(1.5)
+#                    vibr.off()
+#                elif i == '.':
+#                    vibr.on()
+#                    time.sleep(0.5)
+#                    vibr.off()
+#                if button.value() == 0: break
+        if msg == b"ring":
             counter = 20
             while counter>0 :
                 vibr.value(1)
@@ -75,7 +74,7 @@ while True:
                 if button.value() == 0: break
             vibr.value(0)
         elif msg == b"tone":
-            counter = 3
+            counter = 10
             while counter>0:
                 for x in range(1,3):
                     vibr.value(1)

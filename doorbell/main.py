@@ -138,6 +138,8 @@ async def static(request, path):
     if '..' in path:
         # directory traversal is not allowed
         return 'Not found', 404
+    if "ffmpeg" in path:
+        return send_file('static/' + path, compressed=True)
     return send_file('static/' + path)
 
 #updating parameters
@@ -161,6 +163,10 @@ async def updet(request):
                 print("dontreset")
                 volume = vol/100
                 pattern = patt
+            else:
+                print("reset")
+                volume = 0.5
+                pattern = 1.0
             with open("settings.txt","w+") as file:
                 file.write(str(volume)+"\n"+str(pattern))
     return json.dumps({"success":True,"message":"Successfully updated!"}), 200, {'ContentType':'application/json'}
@@ -183,8 +189,10 @@ async def check_button():
         wav = open(filename, "rb")
         #seek to beginning of data
         wav.seek(44)
-        interface.send(peer, "ring")
-        
+        if pattern == 1.0:
+            interface.send(peer, "ring")
+        elif pattern == 2.0:
+            interface.send(peer, "tone")
         print("registered")
         
         #wait before registering next button press

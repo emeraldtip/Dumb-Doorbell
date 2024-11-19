@@ -1,3 +1,10 @@
+let ffmpeg = null
+
+/*function setFFMPEG() {
+	alert("dooooo");
+	let ffmpeg = require("static/ffmpeg-webm.js.gz");
+}*/
+
 document.getElementById("volume-input").addEventListener("input", updateVol, false);
 
 let volume = 50
@@ -23,7 +30,8 @@ function submit() {
 }
 
 function resett() {
-	console.log("reset");
+	reset = 1;
+	sendit();
 }
 
 async function sendit(){
