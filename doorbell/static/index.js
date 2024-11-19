@@ -30,38 +30,43 @@ function updatePattern2(){
 
 function submit() {
 	console.log("sent it");
+	document.getElementById("submitter").disabled = true;
+	document.getElementById("submitter").innerHTML = "Uploading..."
 	sendit();
 }
 
 function resett() {
 	reset = 1;
+	file = null;
+	document.getElementById("resetter").disabled = true;
+	document.getElementById("resetter").innerHTML = "Resetting..."
 	sendit();
 }
 
 async function sendit(){
-    if (file != null) {
-        await fetch('/upload', {
-         method: 'POST',
-         body: file,
-         headers: {
-           'Content-Type': 'application/octet-stream',
-           'Content-Disposition': `attachment; filename="${file.name}"`,
-         },
-        }).then(res => {
-           alert("File uploaded successfully")
-        });
-    }
-    
-    const response = await fetch("/update", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: '{"volume":'+volume.toString()+',"pattern":'+ringType.toString()+',"reset":'+reset.toString()+'}',
-    });
-    //console.log("{'volume':"+volume.toString()+",'pattern':"+ringType.toString()+",'reset':"+reset.toString()+"}")
-    const data = await response.json();
-    alert(data.message);
-    if (data.success) window.location.href = "/";
-    return data;
+	if (file != null) {
+		await fetch('/upload', {
+			method: 'POST',
+			body: file,
+			headers: {
+			'Content-Type': 'application/octet-stream',
+			'Content-Disposition': `attachment; filename="${file.name}"`,
+		},
+		}).then(res => {
+			alert("File uploaded successfully")
+		});
+	}
+	
+	const response = await fetch("/update", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: '{"volume":'+volume.toString()+',"pattern":'+ringType.toString()+',"reset":'+reset.toString()+'}',
+	});
+	//console.log("{'volume':"+volume.toString()+",'pattern':"+ringType.toString()+",'reset':"+reset.toString()+"}")
+	const data = await response.json();
+	alert(data.message);
+	if (data.success) window.location.href = "/";
+	return data;
 }
