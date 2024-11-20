@@ -21,7 +21,7 @@ with open("wristband/write-to-ESP.bat","w") as file:
 	file.write("echo 'Success!'")
 
 with open("install-micropython.bat","w") as file:
-	file.write("./tools-and-binaries/esptool-v4.8.1-win64/esptool-win64/esptool.exe --port " + port + " erase_flash\n")
-	file.write("./tools-and-binaries/esptool-v4.8.1-win64/esptool-win64/esptool.exe --chip esp32 --port " + port + " write_flash -z 0x1000 ./tools-and-binaries/ESP32_GENERIC-20240602-v1.23.0.bin")
+	file.write('"tools-and-binaries/esptool-v4.8.1-win64/esptool-win64/esptool.exe" --port ' + port + " erase_flash\n")
+	file.write('"tools-and-binaries/esptool-v4.8.1-win64/esptool-win64/esptool.exe" --chip esp32 --port ' + port + " write_flash -z 0x1000 ./tools-and-binaries/ESP32_GENERIC-20240602-v1.23.0.bin")
 
 print(".bat files generated successfully!")
