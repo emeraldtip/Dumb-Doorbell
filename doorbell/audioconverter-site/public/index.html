@@ -31,7 +31,7 @@
         await ffmpeg.writeFile(name, await fetchFile(files[0]));
         message.innerHTML = 'Start transcoding';
         console.time('exec');
-        await ffmpeg.exec(['-i', name,  '-c:a', 'pcm_u8', 'output.wav']);
+        await ffmpeg.exec(['-i', name,  '-c:a', 'pcm_u8', '-ar', '11025', 'output.wav']);
         console.timeEnd('exec');
         message.innerHTML = 'Complete transcoding';
         //await ffmpeg.writeFile("output.wacv", await ffmpeg.readFile('output.wav'));
