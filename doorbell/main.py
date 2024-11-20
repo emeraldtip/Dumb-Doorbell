@@ -53,6 +53,7 @@ print("Password=",pw)
 ap.config(essid=ssid, password=pw, security=3) #3 - WPA2_PSK authentication
 
 
+
 #ESP-NOW init logic
 interface = espnow.ESPNow()
 interface.active(True)

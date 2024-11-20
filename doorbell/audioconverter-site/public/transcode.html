@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <script src="/assets/ffmpeg/package/dist/umd/ffmpeg.js"></script>
+    <script src="/assets/util/package/dist/umd/index.js"></script>
+  </head>
+  <body>
+    <h3>Upload an audio file to be converted for the dumb doorbell</h3>
+    <input type="file" id="uploader">
+    <p id="message"></p>
+    <script>
+      const { fetchFile } = FFmpegUtil;
+      const { FFmpeg } = FFmpegWASM;
+      let ffmpeg = null;
+
+      const transcode = async ({ target: { files } }) => {
+        const message = document.getElementById('message');
+        if (ffmpeg === null) {
+          ffmpeg = new FFmpeg();
+          ffmpeg.on("log", ({ message }) => {
+            console.log(message);
+          })
+          ffmpeg.on("progress", ({ progress, time }) => {
+            message.innerHTML = `${progress * 100} %, time: ${time / 1000000} s`;
+          });
+          await ffmpeg.load({
+            coreURL: "/assets/core/package/dist/umd/ffmpeg-core.js",
+          });
+        }
+        const { name } = files[0];
+        await ffmpeg.writeFile(name, await fetchFile(files[0]));
+        message.innerHTML = 'Start transcoding';
+        console.time('exec');
+        await ffmpeg.exec(['-i', name,  '-c:a', 'pcm_u8', 'output.wav']);
+        console.timeEnd('exec');
+        message.innerHTML = 'Complete transcoding';
+        //await ffmpeg.writeFile("output.wacv", await ffmpeg.readFile('output.wav'));
+        const data = await ffmpeg.readFile('output.wav')
+
+        a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([data.buffer], { type: 'application/octet-stream' }));
+        a.setAttribute("download","output.wacv");
+        a.click()
+      }
+      const elm = document.getElementById('uploader');
+      elm.addEventListener('change', transcode);
+    </script>
+  </body>
+</html>
+
