@@ -31,4 +31,4 @@ Upload the microdot and utemplate libraries to the doorbell as well using: ```py
 ## Credits:
 - [microdot](https://github.com/miguelgrinberg/microdot) by [miguelgrinberg](https://github.com/miguelgrinberg/) as the web framework 
 - [utemplate](https://github.com/miguelgrinberg/microdot) by [pfalcon](https://github.com/pfalcon) as the template engine used with microdot
-- [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) by [ffmpeg.wasm](https://github.com/ffmpegwasm) for converting audio files into 8 bit bit depth
+- [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) by [ffmpeg.wasm](https://github.com/ffmpegwasm) for converting audio files into 8 bit bit depth in the browser
