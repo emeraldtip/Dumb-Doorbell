@@ -1,3 +1,4 @@
 Port Names.txt
 *.bat
 *.txt
+/doorbell/audioconverter-site/node_modules
