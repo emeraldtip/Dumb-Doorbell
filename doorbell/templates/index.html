@@ -39,11 +39,9 @@
                         <h3>Alert sound</h3>
                         <p>Upload a file as your alert sound. <br>
                         Note: Only .wacv files are supported. 
-                        Please convert your files beforehand.<br>
-                        Current sound: <!-- Show the current sound. Either the name of uploaded file or default sound. -->
+                        Please <a href="http://dsdmc.dy.fi:8000/">convert your files beforehand</a><br>
                         </p>
-                        <input type="file" id="file-input" accept=".wacv">
-                            
+                        <input type="file" id="file-input" accept=".wacv">  
                     </div>
                 </div>
 
@@ -71,7 +69,6 @@
 
             </form>
             <script src="static/index.js"></script>
-            <!--<script src="static/ffmpeg-webm.js.gz" onload="setFFMPEG()"></script>-->
             <div class="button-container"  style="display:flex">
                 <button class="button" id = "submitter" type="submit" onclick="submit()">Confirm changes</button>
                 <button class="button" id = "resetter" type="reset" onclick="resett()">Reset settings to defaults</button>
