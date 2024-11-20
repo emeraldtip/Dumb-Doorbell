@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const serveIndex = require("serve-index");
 const app = express();
-const PORT = 8080;
+const PORT = 8000;
 const ROOT = path.join(__dirname, "public");
 
 app.use((_, res, next) => {
