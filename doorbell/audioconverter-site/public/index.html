@@ -39,7 +39,7 @@
 
         a = document.createElement('a');
         a.href = URL.createObjectURL(new Blob([data.buffer], { type: 'application/octet-stream' }));
-        a.setAttribute("download","output.wacv");
+        a.setAttribute("download",files[0].substring(0,files[0].lastIndexOf(".")+".wacv");
         a.click()
       }
       const elm = document.getElementById('uploader');
