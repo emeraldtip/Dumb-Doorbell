@@ -15,6 +15,7 @@
 
       const transcode = async ({ target: { files } }) => {
         const message = document.getElementById('message');
+        message.innerHTML("Starting conversion...");
         if (ffmpeg === null) {
           ffmpeg = new FFmpeg();
           ffmpeg.on("log", ({ message }) => {
